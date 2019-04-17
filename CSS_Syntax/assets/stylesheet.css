@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 38px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+.ingredient_list {
+    list-style: square inside;
+}
+
+ol li {
+    list-style: upper-roman inside;
+}

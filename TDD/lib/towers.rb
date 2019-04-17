@@ -8,9 +8,10 @@ class Tower
       raise MoveError if !start_peg.between?(0,2) 
       raise MoveError if !end_peg.between?(0,2) 
       raise MoveError if pegs[start_peg].empty?
+      raise MoveError unless pegs[end_peg][0].nil? || pegs[start_peg][0] < pegs[end_peg][0]
 
-        start_disc = self.start_peg.shift
-        end_peg.unshift(start_disc)
+        start_disc = self.pegs[start_peg].shift
+        pegs[end_peg].unshift(start_disc)
 
     end
 

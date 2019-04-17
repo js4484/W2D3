@@ -11,62 +11,30 @@ describe "Towers of Hanoi" do
     end
 
     describe "#move" do
-        it "takes in a valid start" do
-            tower.move(start_peg, end_peg)
-            start_peg = tower.pegs[start_peg]
-            expect(start_peg).to be_between(0, 2).inclusive
-            expect(start_peg).not_to be_empty
+        it "raises a MoveError if start_peg is invalid" do
+            expect { tower.move(3, 0) }.to raise_error(MoveError)
         end
-
-        context "takes in a valid end" do
-            it "chooses a peg that exists" do
-                tower.move(start_peg, end_peg)
-                expect(end_peg).to be_between(0, 2).inclusive
-            end
-
-            context "when end peg is empty" do
-                it "moves start disc onto chosen peg" do
-                    start_disc = tower.pegs[start_peg][0]
-                    end_disc = tower.pegs[end_peg][0]
-                    end_peg = tower.pegs[end_peg]
-                    expect(end_peg).to be_empty
-                end
-            end
-            context "when end peg has discs" do
-                it "puts start disc on top of chosen peg" do
-                     start_disc = tower.pegs[start_peg][0]
-                    end_disc = tower.pegs[end_peg][0]
-                    end_peg = tower.pegs[end_peg]
-                    expect(start_disc).to be < end_disc
-                end
-            end
-
+        it "raises a MoveError if end_peg is invalid" do
+            expect { tower.move(0, 3) }.to raise_error(MoveError)
         end
-
-        it "raises MoveError if start or end is invalid" do
-            expect { tower.move(4,4) }.to raise_error(MoveError)
-
+        it "raises a MoveError if start peg is empty" do
+            expect { tower.move(2, 0) }.to raise_error(MoveError)
         end
-
-        it "removes starting peg" do
-            @pegs
-            start_disc = tower.pegs[start_peg][0]
-            tower.move(start_peg, end_peg)
-           
-            expect(tower.pegs[start_peg]).not_to include(start_disc)
+        it "moves a disc" do
+            tower.move(0,1)
+            expect(tower.pegs).to eq([[2, 3, 4], [1], []]) 
         end
-
-        it "moves peg to end position" do
-            @pegs
-            start_disc = tower.pegs[start_peg][0]
-            tower.move(start_peg, end_peg)
-            expect(tower.pegs[end_peg][0]).to eq(start_disc)
+       
+        it "can't put a larger disc on a smaller disc" do
+            tower.move(0,1)
+            
+            expect { tower.move(0, 1) }.to raise_error(MoveError)
         end
-    
+ 
     end
     
     describe "#won?" do
-        it "checks if the las peg has a discs in order" do
+        it "checks if the last peg has a discs in order" do
             expect(true) if tower.pegs[-1] == [1, 2, 3, 4]
             expect(false) if tower.pegs[-1] != [1, 2, 3, 4]
         end
